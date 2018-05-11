@@ -43,6 +43,27 @@ module.exports = () => {
 		const formData = FORM.clientJSON('departments');
 		return callback(null, HTTP.response(200, formData));
 	}
+	//Method: POST
+	//Params: -
+	//Returns id of created element
+	api.add.POST = (event, context, callback) => {
+		try {
+			const data = FORM.extractData('departments', event.body);
+			// extractData returns:
+			// { table1: { field1: value1, field2: value2, ...}, table2: {...}, ...}
+			// insertData calls INSERT for all tables in 'data'
+			insertData(DB, data, (error, result) => {
+				if (error) {
+					return callback(null, HTTP.response(500));
+				} else {
+					// TODO: insertData must return id of created element
+					return callback(null, HTTP.response(200));
+				}
+			});
+		} catch (e) {
+			return callback(null, HTTP.response(500));
+		}
+	}
 	
 	api.edit = {};
 	//Method: GET
